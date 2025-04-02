@@ -8,7 +8,6 @@ type ColorKeys = keyof typeof Colors.light;
 type Props = TextProps & {
   variant?: keyof typeof styles;
   color?: ColorKeys;
-  style?: object;
 };
 const styles = StyleSheet.create({
   body1: {

@@ -5,10 +5,10 @@ import { View, ViewProps, ViewStyle } from "react-native";
 type Props = ViewProps;
 
 const Card = ({ style, ...rest }: Props) => {
-  const Colors = useThemeColor();
+  const colors = useThemeColor();
   return (
     <View
-      style={[styles, { backgroundColor: Colors.grayWhite }, style]}
+      style={[styles, { backgroundColor: colors.grayWhite }, style]}
       {...rest}
     ></View>
   );
