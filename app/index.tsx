@@ -8,33 +8,34 @@ import {
 } from "react-native";
 import { Link } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
-
 import ThemedText from "@/app/components/ThemedText";
 import useThemeColor from "@/hooks/useThemeColor";
 import Card from "./components/Card";
 import PokemonCard from "./components/pokemon/PokemonCard1";
-import { useFetchQuery } from "@/hooks/useFetchQuery";
+import { useInfiniteFetchQuery } from "@/hooks/useFetchQuery";
 import { getPokemonId } from "@/app/functions/pokemon";
-
-interface Pokemon {
-  name: string;
-  url: string;
-}
-
-interface PokemonResponse {
-  results: Pokemon[];
-}
+import { SearchSection } from "./components/SearchSection";
+import { Row } from "./components/Row";
+import { useState } from "react";
 
 export default function Index() {
   const color = useThemeColor();
-  const { data, isFetching } = useFetchQuery("pokemon?limit=21");
-
-  const pokemons = data?.results ?? [];
+  const { data, isFetching, fetchNextPage } =
+    useInfiniteFetchQuery("pokemon?limit=21");
+  const [search, setSerch] = useState("");
+  const pokemons = data?.pages.flatMap((page) => page.results) ?? [];
+  let filteredPokemons = search
+    ? pokemons.filter(
+        (p) =>
+          p.name.includes(search.toLowerCase()) ||
+          getPokemonId(p.url).toString().includes(search.toLowerCase())
+      )
+    : pokemons;
   return (
     <SafeAreaView
       style={[styles.container, { backgroundColor: color.tint, padding: 5 }]}
     >
-      <View style={styles.header}>
+      <Row style={styles.header} gap={12}>
         <Image
           source={require("@/assets/images/pokeball.png")}
           style={styles.image}
@@ -43,13 +44,16 @@ export default function Index() {
         <ThemedText variant={"headline"} color={"grayLight"}>
           Pokedex
         </ThemedText>
+      </Row>
+      <View>
+        <SearchSection value={search} onChange={setSerch} />
       </View>
       <Card style={styles.body}>
         <FlatList
           style={styles.list}
           columnWrapperStyle={styles.gridGap}
           contentContainerStyle={styles.gridGap}
-          data={pokemons}
+          data={filteredPokemons}
           ListFooterComponent={
             isFetching ? <ActivityIndicator color={color.tint} /> : null
           }
@@ -62,6 +66,7 @@ export default function Index() {
             />
           )}
           keyExtractor={(item) => item.url}
+          onEndReached={search ? undefined : () => fetchNextPage()}
         />
       </Card>
     </SafeAreaView>
@@ -73,16 +78,14 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 12,
     padding: 6,
   },
   body: {
     flex: 1,
     overflow: "visible",
     alignItems: "center",
-    padding: 7,
+    paddingVertical: 7,
+    marginTop: 8,
   },
   image: {
     width: 36,
@@ -91,7 +94,7 @@ const styles = StyleSheet.create({
   list: {
     padding: 5,
   },
-  gridGap: { gap: 8 },
+  gridGap: { gap: 10 },
 });
 
 /* note for lesson : 

@@ -1,7 +1,8 @@
-import { Image, StyleSheet, View, ViewStyle } from "react-native";
+import { Image, Pressable, StyleSheet, View, ViewStyle } from "react-native";
 import Card from "../Card";
 import ThemedText from "@/app/components/ThemedText";
 import useThemeColor from "@/hooks/useThemeColor";
+import { Link } from "expo-router";
 
 type Props = {
   style?: ViewStyle;
@@ -9,28 +10,35 @@ type Props = {
   name: string;
 };
 
-export default function PokemonCard({ id, name, style }: Props) {
+export default function PokemonCard({ id, style, name }: Props) {
   const colors = useThemeColor();
   return (
-    <Card style={styles.card}>
-      <ThemedText
-        style={{ alignSelf: "flex-end", padding: 2 }}
-        variant="caption"
-      >
-        #{id.toString().padStart(3, "0")}
-      </ThemedText>
-      <Image
-        source={{
-          uri: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`,
-        }}
-        style={{ width: 100, height: 100 }} // Style OBLIGATOIRE
-        resizeMode="contain"
-      />
-      <ThemedText>{name}</ThemedText>
-      <View
-        style={[styles.shadowView, { backgroundColor: colors.grayBackground }]}
-      ></View>
-    </Card>
+    <Link href={{ pathname: "/pokemon/[id]", params: { id: id } }} asChild>
+      <Pressable style={[style]}>
+        <Card style={[styles.card]}>
+          <ThemedText
+            style={{ alignSelf: "flex-end", padding: 2 }}
+            variant="caption"
+          >
+            #{id.toString().padStart(3, "0")}
+          </ThemedText>
+          <Image
+            source={{
+              uri: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`,
+            }}
+            style={{ width: 105, height: 100 }}
+            resizeMode="contain"
+          />
+          <ThemedText>{name}</ThemedText>
+          <View
+            style={[
+              styles.shadowView,
+              { backgroundColor: colors.grayBackground },
+            ]}
+          ></View>
+        </Card>
+      </Pressable>
+    </Link>
   );
 }
 

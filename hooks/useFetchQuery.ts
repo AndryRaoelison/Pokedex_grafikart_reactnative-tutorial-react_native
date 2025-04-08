@@ -1,7 +1,8 @@
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+
+const uri = "https://pokeapi.co/api/v2/";
 
 export function useFetchQuery(path: string) {
-  const uri = "https://pokeapi.co/api/v2/";
   return useQuery({
     queryKey: [path],
     queryFn: async () => {
@@ -12,6 +13,28 @@ export function useFetchQuery(path: string) {
         }
         return res.json();
       });
+    },
+  });
+}
+
+export function useInfiniteFetchQuery(path: string) {
+  return useInfiniteQuery({
+    queryKey: [path],
+    initialPageParam: uri + path,
+    queryFn: async ({ pageParam }) => {
+      await waitFunction(1);
+      return fetch(pageParam, {
+        headers: {
+          "Content-type": "Application/json",
+          Accept: "application/json",
+        },
+      }).then((res) => res.json());
+    },
+    getNextPageParam: (lastPage) => {
+      if ("next" in lastPage) {
+        return lastPage.next;
+      }
+      return null;
     },
   });
 }
