@@ -18,6 +18,7 @@ export function SearchSection({ value, onChange }: Props) {
           paddingLeft: 8,
           paddingVertical: 4,
           borderRadius: 20,
+          flex: 1,
         },
       ]}
     >
