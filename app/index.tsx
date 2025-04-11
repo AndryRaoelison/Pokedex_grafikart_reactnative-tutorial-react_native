@@ -1,26 +1,19 @@
-import {
-  ActivityIndicator,
-  FlatList,
-  Image,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
-import { Link } from "expo-router";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { ActivityIndicator, FlatList, Image, StyleSheet } from "react-native";
+import { useState } from "react";
+
+import { getPokemonId } from "@/app/functions/pokemon";
+import { SortButton } from "./components/SortButton";
+import { RootView } from "./components/RootView";
+import { Row } from "./components/Row";
+import { SearchSection } from "./components/SearchSection";
 import ThemedText from "@/app/components/ThemedText";
 import useThemeColor from "@/hooks/useThemeColor";
 import Card from "./components/Card";
 import PokemonCard from "./components/pokemon/PokemonCard1";
 import { useInfiniteFetchQuery } from "@/hooks/useFetchQuery";
-import { getPokemonId } from "@/app/functions/pokemon";
-import { SearchSection } from "./components/SearchSection";
-import { Row } from "./components/Row";
-import { useState } from "react";
-import { SortButton } from "./components/SortButton";
 
 export default function Index() {
-  const color = useThemeColor();
+  const colors = useThemeColor();
   const { data, isFetching, fetchNextPage } =
     useInfiniteFetchQuery("pokemon?limit=21");
   const [search, setSearch] = useState("");
@@ -39,9 +32,7 @@ export default function Index() {
       : pokemons),
   ].sort((a, b) => (a[sortKey] < b[sortKey] ? -1 : 1));
   return (
-    <SafeAreaView
-      style={[styles.container, { backgroundColor: color.tint, padding: 5 }]}
-    >
+    <RootView>
       <Row style={styles.header} gap={12}>
         <Image
           source={require("@/assets/images/pokeball.png")}
@@ -63,7 +54,7 @@ export default function Index() {
           contentContainerStyle={styles.gridGap}
           data={filteredPokemons}
           ListFooterComponent={
-            isFetching ? <ActivityIndicator color={color.tint} /> : null
+            isFetching ? <ActivityIndicator color={colors.tint} /> : null
           }
           numColumns={3}
           renderItem={({ item }) => (
@@ -77,7 +68,7 @@ export default function Index() {
           onEndReached={search ? undefined : () => fetchNextPage()}
         />
       </Card>
-    </SafeAreaView>
+    </RootView>
   );
 }
 

@@ -29,7 +29,9 @@ export default function PokemonCard({ id, style, name }: Props) {
             style={{ width: 105, height: 100 }}
             resizeMode="contain"
           />
-          <ThemedText>{name}</ThemedText>
+          <ThemedText style={{ textTransform: "capitalize" }}>
+            {name}
+          </ThemedText>
           <View
             style={[
               styles.shadowView,

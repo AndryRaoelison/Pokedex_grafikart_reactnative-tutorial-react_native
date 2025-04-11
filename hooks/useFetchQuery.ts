@@ -1,13 +1,49 @@
+import { Colors } from "@/constants/Colors";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 
 const uri = "https://pokeapi.co/api/v2/";
 
-export function useFetchQuery(path: string) {
+type API = {
+  "pokemon/[id]": {
+    id: string;
+    name: string;
+    url: string;
+    height: number;
+    weight: number;
+    moves: {
+      move: { name: string };
+    }[];
+    stats: {
+      base_stat: number;
+      stat: {
+        name: string;
+      };
+    }[];
+    cries: {
+      latest: string;
+    };
+    types: {
+      type: { name: keyof (typeof Colors)["type"] };
+    }[];
+  };
+};
+
+export function useFetchQuery<T extends keyof API>(
+  path: T,
+  params?: Record<string, string | number>
+) {
+  const endpoint =
+    uri +
+    Object.entries(params ?? {}).reduce(
+      (acc: string, [key, value]) =>
+        acc.replaceAll(`[${key}]`, value.toString()),
+      path
+    );
   return useQuery({
-    queryKey: [path],
+    queryKey: [endpoint],
     queryFn: async () => {
       await waitFunction(1);
-      return fetch(uri + path).then((res) => {
+      return fetch(endpoint).then((res) => {
         if (!res.ok) {
           throw new Error("Network response was not ok");
         }
