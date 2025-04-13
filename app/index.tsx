@@ -39,7 +39,7 @@ export default function Index() {
           style={styles.image}
           resizeMode="contain"
         />
-        <ThemedText variant={"headline"} color={"grayLight"}>
+        <ThemedText variant={"headline"} color={"grayWhite"}>
           Pokedex
         </ThemedText>
       </Row>

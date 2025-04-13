@@ -22,13 +22,7 @@ import {
 import Card from "../components/Card";
 import { PokemonTypeLabel } from "../components/PokemonTypeLabel";
 import { PokemonSpecs } from "../components/PokemonSpecs";
-
-interface PokemonMove {
-  move: {
-    name: string;
-    url: string;
-  };
-}
+import { BarStats } from "../components/BarStats";
 
 export default function pokemon() {
   const color = useThemeColor();
@@ -36,6 +30,14 @@ export default function pokemon() {
   const { data, isFetching } = useFetchQuery("pokemon/[id]", {
     id: localParams.id,
   });
+  const { data: bioFetch } = useFetchQuery("pokemon-species/[id]", {
+    id: localParams.id,
+  });
+  const bio = bioFetch?.flavor_text_entries
+    ?.find(
+      (entry: { language: { name: string } }) => entry.language.name === "en"
+    )
+    ?.flavor_text.replaceAll("\n", " ");
   const pokemonBackgroundColor: keyof (typeof Colors)["type"] =
     data?.types?.[0].type.name;
   const pokemonTypeBackground = pokemonBackgroundColor
@@ -51,6 +53,7 @@ export default function pokemon() {
           <ActivityIndicator size="large" color={color.grayLight} />
         </View>
       ) : (
+        // Pokemon detail header section and link to get back
         <>
           <Row style={{ justifyContent: "space-between" }}>
             <Image
@@ -84,11 +87,12 @@ export default function pokemon() {
             <ThemedText
               variant="subtitle1"
               color="grayWhite"
-              style={{ paddingHorizontal: 5 }}
+              style={{ paddingHorizontal: 5, paddingVertical: 4 }}
             >
               #{localParams.id.toString().padStart(3, "0")}
             </ThemedText>
           </Row>
+          {/* Pokemon stat details  */}
           <View>
             <Image
               source={{ uri: getArtworklink(localParams.id) }}
@@ -111,6 +115,7 @@ export default function pokemon() {
                   )
                 )}
               </Row>
+              {/* Measurement */}
               <ThemedText
                 variant="subtitle1"
                 style={{ color: pokemonTypeBackground, paddingVertical: 5 }}
@@ -142,17 +147,40 @@ export default function pokemon() {
                 <PokemonSpecs
                   title={data?.moves
                     .slice(0, 2)
-                    .map((m: PokemonMove) => m?.move?.name.replace("-", " "))
+                    .map((m: { move: { name: string } }) =>
+                      m?.move?.name.replace("-", " ")
+                    )
                     .join("\n")}
                   description="Move"
                 />
               </Row>
+              <View style={{ alignSelf: "auto", paddingHorizontal: 15 }}>
+                <ThemedText style={{ fontSize: 12 }}>{bio} </ThemedText>
+              </View>
               <ThemedText
                 variant="subtitle1"
                 style={{ color: pokemonTypeBackground, paddingVertical: 5 }}
               >
                 Base Stat
               </ThemedText>
+              <View
+                style={{
+                  alignSelf: "stretch",
+                  overflow: "hidden",
+                  paddingHorizontal: 10,
+                }}
+              >
+                {data?.stats.map(
+                  (stat: { base_stat: number; stat: { name: string } }) => (
+                    <BarStats
+                      key={stat.stat.name}
+                      name={stat.stat.name}
+                      value={stat.base_stat}
+                      textColor={pokemonTypeBackground}
+                    />
+                  )
+                )}
+              </View>
             </Card>
           </View>
           <Text>Pokemon ID : {localParams.id}</Text>
