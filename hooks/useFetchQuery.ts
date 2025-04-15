@@ -21,6 +21,7 @@ type API = {
     }[];
     cries: {
       latest: string;
+      // legacy : string;
     };
     types: {
       type: { name: keyof (typeof Colors)["type"] };
@@ -50,7 +51,7 @@ export function useFetchQuery<T extends keyof API>(
   return useQuery({
     queryKey: [endpoint],
     queryFn: async () => {
-      await waitFunction(1);
+      await waitFunction(0.3);
       return fetch(endpoint).then((res) => {
         if (!res.ok) {
           throw new Error("Network response was not ok");

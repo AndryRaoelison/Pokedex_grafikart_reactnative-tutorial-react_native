@@ -7,6 +7,7 @@ import {
   Text,
   View,
 } from "react-native";
+import { Audio } from "expo-av";
 
 import { RootView } from "../components/RootView";
 import { Row } from "../components/Row";
@@ -34,9 +35,7 @@ export default function pokemon() {
     id: localParams.id,
   });
   const bio = bioFetch?.flavor_text_entries
-    ?.find(
-      (entry: { language: { name: string } }) => entry.language.name === "en"
-    )
+    ?.find((bio: { language: { name: string } }) => bio.language.name === "en")
     ?.flavor_text.replaceAll("\n", " ");
   const pokemonBackgroundColor: keyof (typeof Colors)["type"] =
     data?.types?.[0].type.name;
@@ -44,8 +43,47 @@ export default function pokemon() {
     ? Colors["type"][pokemonBackgroundColor]
     : color.tint;
   const types = data?.types ?? [];
+
+  //OnImagePress handle the pokemons cries when it's pressed
+  const onImagePress = async () => {
+    const cry = data?.cries.latest;
+    if (!cry) {
+      return;
+    }
+    const { sound } = await Audio.Sound.createAsync(
+      {
+        uri: cry,
+      },
+      {
+        shouldPlay: true,
+      }
+    );
+    sound.playAsync();
+  };
+  //This section work on navigation feature : (next - previous pokemon details page)
+  const isFirstPokemon = localParams.id === "1";
+  const isLastPokemon = localParams.id === "151";
+
+  //previousPage handle the page change (show the previous pokemon based on ID) when it's pressed
+  const previousPage = () => {
+    const id = parseInt(localParams.id, 10);
+    router.replace({
+      pathname: "/pokemon/[id]",
+      params: { id: Math.max(id - 1, 1) },
+    });
+  };
+  //nextPage handle the page change (show the previous pokemon based on ID) when it's pressed
+  const nextPage = () => {
+    const id = parseInt(localParams.id, 10);
+    router.replace({
+      pathname: "/pokemon/[id]",
+      params: { id: Math.min(id + 1, 151) },
+    });
+  };
+
   return (
-    <RootView style={{ backgroundColor: pokemonTypeBackground }}>
+    <RootView pokemonTypeBackground={pokemonTypeBackground}>
+      {/*Setting backgroundcolor based on the pokemontype*/}
       {isFetching ? (
         <View
           style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
@@ -71,7 +109,7 @@ export default function pokemon() {
             <Pressable onPress={router.back}>
               <Row style={{ justifyContent: "center" }}>
                 <Image
-                  style={styles.imageSizeStyle}
+                  style={styles.arrowSizeStyle}
                   source={require("@/assets/images/arrow-left.png")}
                   resizeMode="contain"
                 />
@@ -94,12 +132,35 @@ export default function pokemon() {
           </Row>
           {/* Pokemon stat details  */}
           <View>
-            <Image
-              source={{ uri: getArtworklink(localParams.id) }}
-              width={200}
-              height={200}
-              style={styles.pokemonImageStyle}
-            />
+            <Row style={styles.pokemonImageStyle}>
+              {isFirstPokemon ? (
+                <View style={{ height: 25, width: 25 }} />
+              ) : (
+                <Pressable onPress={() => previousPage()}>
+                  <Image
+                    source={require("@/assets/images/chevron-left.png")}
+                    style={styles.chevronSizeStyle}
+                  />
+                </Pressable>
+              )}
+              <Pressable onPress={onImagePress}>
+                <Image
+                  source={{ uri: getArtworklink(localParams.id) }}
+                  width={200}
+                  height={200}
+                />
+              </Pressable>
+              {isLastPokemon ? (
+                <View style={{ height: 25, width: 25 }} />
+              ) : (
+                <Pressable onPress={() => nextPage()}>
+                  <Image
+                    source={require("@/assets/images/chevron-right.png")}
+                    style={styles.chevronSizeStyle}
+                  />
+                </Pressable>
+              )}
+            </Row>
             <Card style={styles.cardStyle}>
               <Row>
                 {types.map(
@@ -183,7 +244,6 @@ export default function pokemon() {
               </View>
             </Card>
           </View>
-          <Text>Pokemon ID : {localParams.id}</Text>
         </>
       )}
     </RootView>
@@ -191,14 +251,22 @@ export default function pokemon() {
 }
 
 const styles = StyleSheet.create({
-  imageSizeStyle: {
+  arrowSizeStyle: {
     height: 40,
     width: 40,
   },
+  chevronSizeStyle: {
+    height: 25,
+    width: 25,
+  },
   pokemonImageStyle: {
     position: "absolute",
-    alignSelf: "center",
     zIndex: 2,
+    justifyContent: "space-between",
+
+    left: 0,
+    right: 0,
+    paddingHorizontal: 20,
   },
   cardStyle: {
     marginTop: 144,
