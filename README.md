@@ -20,7 +20,7 @@ Elle exploite l’API publique [PokeAPI](https://pokeapi.co/) pour afficher, fil
 
 -  **Recherche** de Pokémon par **nom** ou **numéro**
 -  **Tri** des Pokémon par **ordre alphabétique** ou par **numéro**
-  ![image](https://github.com/user-attachments/assets/b91f418c-82e2-4a0b-8075-49f98f9f0181)
+ ![image](https://github.com/user-attachments/assets/cbcb0d9c-075c-456c-b635-a65621183a09)
 -  **Affichage détaillé** d’un Pokémon sur une page dédiée où le style s'adapte en fonction du type de pokemon
 -  Navigation entre les Pokémon grâce à des **chevrons**
 -  Interface fluide avec des **animations React Reanimated**
@@ -29,7 +29,7 @@ Elle exploite l’API publique [PokeAPI](https://pokeapi.co/) pour afficher, fil
 
 ---
 
-## ⚙ Technologies utilisées
+##  Technologies utilisées
 
 - React Native - expo
 - TypeScript
@@ -40,8 +40,7 @@ Elle exploite l’API publique [PokeAPI](https://pokeapi.co/) pour afficher, fil
 
 ---
 
-## 🚀 Lancer le projet
-
+##  Lancer le projet :
 >  Nécessite un environnement React Native installé (via Expo ou CLI natif)
 
 > **Toute remarque constructive via une Pull Request est la bienvenue !**
