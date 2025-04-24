@@ -1,50 +1,48 @@
-# Welcome to your Expo app 👋
+""""""""""""""""""""fr-FR"""""""""""""""""""""""""""""""""""
+# Pokédex - React Native 
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Ce projet est une application mobile de type Pokédex développée avec **React Native** et **TypeScript**. Il s'agit d'un projet educatif en suivant un tutoriel de la chaine youtube : Grafikart.  
+Elle exploite l’API publique [PokeAPI](https://pokeapi.co/) pour afficher, filtrer et naviguer dans une base de données de Pokémon de manière fluide et interactive.
 
-## Get started
+---
 
-1. Install dependencies
+## L'objectif de ce projet est principalement pédagogique pour d'ameliorer les compétences en developpement mobile, notamment : 
 
-   ```bash
-   npm install
-   ```
+- Pratiquer le développement mobile avec **React Native**
+- Approfondir l'utilisation de **TypeScript** dans un projet concret
+- Maîtriser la **récupération de données (fetching)** avec **TanStack Query**
+- Utiliser **React Reanimated** pour des animations performantes
+- Mettre en œuvre une **architecture modulaire** basée sur des composants réutilisables
 
-2. Start the app
+---
 
-   ```bash
-    npx expo start
-   ```
+## Fonctionnalités principales
 
-In the output, you'll find options to open the app in a
+-  **Recherche** de Pokémon par **nom** ou **numéro**
+-  **Tri** des Pokémon par **ordre alphabétique** ou par **numéro**
+  ![image](https://github.com/user-attachments/assets/b91f418c-82e2-4a0b-8075-49f98f9f0181)
+-  **Affichage détaillé** d’un Pokémon sur une page dédiée où le style s'adapte en fonction du type de pokemon
+-  Navigation entre les Pokémon grâce à des **chevrons**
+-  Interface fluide avec des **animations React Reanimated**
+-  Gestion factorisée des **couleurs**, du **fetching**, et des **composants UI**
+  
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+---
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+## ⚙ Technologies utilisées
 
-## Get a fresh project
+- React Native - expo
+- TypeScript
+- React Reanimated
+- TanStack Query (ex React Query)
+- React Navigation
+- PokeAPI
 
-When you're ready, run:
+---
 
-```bash
-npm run reset-project
-```
+## 🚀 Lancer le projet
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+>  Nécessite un environnement React Native installé (via Expo ou CLI natif)
 
-## Learn more
+> **Toute remarque constructive via une Pull Request est la bienvenue !**
 
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
