@@ -27,9 +27,8 @@ The primary purpose of this project is educational, aiming to improve mobile dev
 - **Detailed display** of a Pokémon on a dedicated screen, with styles that adapt based on the Pokémon type
 - Navigation between Pokémon using **chevrons**
 - Smooth interface with **React Reanimated animations**
- ![image](https://github.com/user-attachments/assets/aa1dc234-af1b-40a3-a2e7-946a7c728066)
-
 - Centralized management of **colors**, **data fetching**, and **UI components**
+ ![image](https://github.com/user-attachments/assets/aa1dc234-af1b-40a3-a2e7-946a7c728066)
 
 ---
 
@@ -45,13 +44,10 @@ The primary purpose of this project is educational, aiming to improve mobile dev
 ---
 
 ## Getting Started
-
 > Requires a working React Native environment (via Expo or native CLI)
 
+> **Any constructive feedback or improvements through a Pull Request is welcome!**
 ---
-
-**Any constructive feedback or improvements through a Pull Request is welcome!**
-
 """"""""""""""""""""fr-FR"""""""""""""""""""""""""""""""""""
 # Pokédex - React Native 
 
